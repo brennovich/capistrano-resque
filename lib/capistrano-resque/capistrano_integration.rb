@@ -33,7 +33,7 @@ module CapistranoResque
 
         def start_command(queue, pid)
           "cd #{current_path} && RAILS_ENV=#{rails_env} QUEUE=\"#{queue}\" \
-           PIDFILE=#{pid} BACKGROUND=yes VERBOSE=1 \
+           PIDFILE=#{pid} BACKGROUND=yes VERBOSE=1 NEWRELIC_ENABLE=false \
            #{fetch(:bundle_cmd, "bundle")} exec rake resque:work"
         end
 
@@ -47,7 +47,7 @@ module CapistranoResque
 
         def start_scheduler(pid)
           "cd #{current_path} && RAILS_ENV=#{rails_env} \
-           PIDFILE=#{pid} BACKGROUND=yes VERBOSE=1 \
+           PIDFILE=#{pid} BACKGROUND=yes VERBOSE=1 NEWRELIC_ENABLE=false \
            #{fetch(:bundle_cmd, "bundle")} exec rake resque:scheduler"
         end
 
@@ -96,7 +96,7 @@ module CapistranoResque
             stop
             start
           end
-          
+
           namespace :scheduler do
             desc "Starts resque scheduler with default configs"
             task :start, :roles => :resque_scheduler do
